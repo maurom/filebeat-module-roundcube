@@ -1,0 +1,16 @@
+- key: roundcube
+  title: "Roundcube"
+  description: >
+    Module for parsing Roundcube log files.
+  short_config: true
+  fields:
+    - name: roundcube
+      type: group
+      description: >
+        Fields from Roundcube log files.
+      fields:
+        - name: session_prefix
+          type: text
+          description: >
+            The prefix of the session identifier.
+

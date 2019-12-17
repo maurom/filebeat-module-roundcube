@@ -1,0 +1,16 @@
+---   # manifest for Roundcube User Logins log (userlogins.log)
+
+module_version: 1.1
+
+var:
+  - name: paths
+    default:
+      - /var/log/roundcube/userlogins
+      - /var/log/roundcube/userlogins.log*
+
+ingest_pipeline: ingest/default.yml
+input: config/userlogins.yml
+
+requires.processors:
+  - name: geoip
+    plugin: ingest-geoip

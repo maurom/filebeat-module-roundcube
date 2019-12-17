@@ -1,0 +1,39 @@
+{
+  "description": "Pipeline for parsing Roundcube's errors.log.",
+  "processors": [
+      {
+        "grok": {
+          "field": "message",
+          "ignore_missing": false,
+          "ignore_failure": false,
+          "pattern_definitions": {
+            "ROUNDCUBE_DATETIME": "%{MONTHDAY}[/-]%{WORD}[/-]%{YEAR} %{TIME} %{INT}"
+          },
+          "patterns": [
+            "^\\[%{ROUNDCUBE_DATETIME:timestamp}\\]: \\<%{DATA:roundcube.session_prefix}\\> %{GREEDYDATA:message}$"
+          ]
+        }
+  },
+  {
+      "date": {
+        "field": "timestamp",
+        "target_field": "@timestamp",
+        "formats": ["dd-MMM-YYYY HH:mm:ss Z"],
+        "locale": "en-US",
+        "ignore_failure": false
+      }
+  }, {
+      "remove": {
+        "field": "timestamp",
+        "ignore_missing": true
+      }
+  }],
+  "on_failure": [
+      {
+          "set": {
+              "field": "error.message",
+              "value": "{{ _ingest.on_failure_message }}"
+          }
+      }
+  ]
+}

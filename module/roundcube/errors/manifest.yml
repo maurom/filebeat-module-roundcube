@@ -1,0 +1,12 @@
+---   # manifest for Roundcube Application Errors log (errors.log)
+
+module_version: 1.1
+
+var:
+  - name: paths
+    default:
+      - /var/log/roundcube/errors
+      - /var/log/roundcube/errors.log*
+
+ingest_pipeline: ingest/default.yml
+input: config/errors.yml

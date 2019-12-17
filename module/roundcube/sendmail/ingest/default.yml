@@ -1,0 +1,46 @@
+---
+description: Pipeline for parsing Roundcube's sendmail.log. Requires the geoip plugin.
+processors:
+  - grok:
+      field: message
+      ignore_missing: false
+      ignore_failure: false
+      pattern_definitions:
+        ROUNDCUBE_DATETIME: "%{MONTHDAY}[/-]%{WORD}[/-]%{YEAR} %{TIME} %{INT}"
+      patterns:
+        # username is DATA and not USERNAME because it can contain @ at any place (even at the end)
+        - "^\\[%{ROUNDCUBE_DATETIME:timestamp}\\]: \\<%{DATA:roundcube.session_prefix}\\> User %{DATA:user.name}
+          \\[%{IP:source.ip}\\]; %{DATA:message} for %{DATA:recipients};"
+  - split:
+      field: recipients
+      separator: ",\\s*"
+  # Enable lowercase processor when using latin locales on the date processor
+  # - lowercase:
+  #     field: timestamp
+  - date:
+      field: timestamp
+      target_field: "@timestamp"
+      formats:
+        - "dd-MMM-YYYY HH:mm:ss Z"
+      locale: en-US
+      ignore_failure: false
+  - remove:
+      field: timestamp
+      ignore_missing: true
+  - geoip:
+      field: source.ip
+      target_field: source.geo
+      ignore_failure: true
+      ignore_missing: true
+  - geoip:
+      database_file: GeoLite2-ASN.mmdb
+      field: source.ip
+      target_field: as
+      properties:
+        - number
+        - organization.name
+      ignore_missing: true
+on_failure:
+  - set:
+      field: error.message
+      value: "{{ _ingest.on_failure_message }}"

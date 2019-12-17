@@ -1,0 +1,16 @@
+---   # manifest for Roundcube Password Change log (password.log)
+
+module_version: 1.1
+
+var:
+  - name: paths
+    default:
+      - /var/log/roundcube/password
+      - /var/log/roundcube/password.log*
+
+ingest_pipeline: ingest/default.yml
+input: config/password.yml
+
+requires.processors:
+  - name: geoip
+    plugin: ingest-geoip

@@ -1,0 +1,24 @@
+# Module: roundcube
+
+- module: roundcube
+
+  errors:
+    enabled: true
+    # var.paths:
+    # - /var/log/roundcube/errors.log*
+
+  sendmail:
+    enabled: true
+    # var.paths:
+    # - /var/log/roundcube/sendmail.log*
+
+  password:
+    enabled: true
+    # var.paths:
+    # - /var/log/roundcube/password.log*
+
+  userlogins:
+    enabled: true
+    # var.paths:
+    # - /var/log/roundcube/userlogins.log*
+

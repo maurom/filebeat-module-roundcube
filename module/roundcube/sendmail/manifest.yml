@@ -1,0 +1,16 @@
+---   # manifest for Roundcube Email Sents log (sendmail.log)
+
+module_version: 1.1
+
+var:
+  - name: paths
+    default:
+      - /var/log/roundcube/sendmail
+      - /var/log/roundcube/sendmail.log*
+
+ingest_pipeline: ingest/default.yml
+input: config/sendmail.yml
+
+requires.processors:
+  - name: geoip
+    plugin: ingest-geoip

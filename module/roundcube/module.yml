@@ -1,0 +1,9 @@
+# Filebeat module for Roundcube Logs
+# Mauro A. Meloni <maumeloni@gmail.com>
+#
+# Version: 2019-12-05 12:04
+
+#dashboards:
+#- id: Filebeat-Roundcube-Dashboard
+#  file: Filebeat-roundcube.json
+#  /usr/share/filebeat/kibana/7/dashboard/
